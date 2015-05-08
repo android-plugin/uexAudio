@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+
+<!-- common use通用字符串 -->
+    <string name="app_name">uexAudio</string>
+    <string name="back">返回</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="prompt">提示</string>
+    <string name="path_error">路径错误!</string>
+    <string name="settings">设置</string>
+    <string name="save">保存</string>
+    <string name="select_all">全选</string>
+    <string name="cancel_select_all">取消选定</string>
+    <string name="select">选择</string>
+    <string name="can_not_find_suitable_app_perform_this_operation">找不到适合的程序执行此操作!</string>
+    <string name="exit">退出</string>
+    <string name="confirm_delete">确定删除</string>
+    <string name="ma">吗?</string>
+    <string name="exit_message_server">该应用暂停服务</string>
+    <string name="exit_message_appid">当前应用ID非法</string>
+    <string name="error_parameter">参数错误</string>
+    <string name="no_have_read_limits_power">没有读取权限</string>
+    <string name="no_have_write_limits_power">没有写入权限</string>
+    <string name="error_sdcard_is_not_available">SD卡不可用</string>
+    <string name="error_file_does_not_exist">文件不存在</string>
+    <string name="error_no_permisson_RW">没有读写权限</string>
+    <string name="error_no_permisson_INTERNET">没有网络访问权限</string>
+    <string name="no_permisson_declare">没有申明相关权限</string>
+
+    <!-- browser use -->
+    <string name="browser_exitdialog_app_text">确定要退出程序吗？</string>
+    <string name="browser_exitdialog_msg">退出提示</string>
+    <string name="browser_dialog_error">错误提示</string>
+    <string name="browser_init_error">程序不完整</string>
+
+    <string name="appkey">82ae9d4e-557e-4491-b2b9-822b6b7b8d4d</string>
+    <string name="push">true</string>
+    <string name="appstatus">6D4F716AB6384036B4F0AC</string>
+
+    <!-- platform myspace  use -->
+    <string name="platform_myspace_app_center">应用中心</string>
+    <string name="platform_myspace_recommend_apps">推荐应用</string>
+    <string name="platform_myspace_my_apps">我的应用</string>
+    <string name="platform_myspace_pull_to_refresh">下拉刷新推荐列表</string>
+    <string name="platform_myspace_release_to_refresh">释放刷新推荐列表</string>
+    <string name="platform_myspace_loading">加载中...</string>
+    <string name="platform_myspace_tap_to_refresh">点击刷新推荐列表</string>
+
+    <!-- uexAudio -->
+    <string name="plugin_audio_recoreder_recorder">录音机</string>
+    <string name="plugin_audio_recorder_prepare_record">准备录音</string>
+    <string name="plugin_audio_recorder_now_recording">正在录音...</string>
+    <string name="plugin_audio_recorder_now_saving_record">正在保存录音...</string>
+    <string name="plugin_audio_recorder_sdcard_free_space_not_enough">内存卡剩余空间不足!</string>
+    <string name="plugin_audio_play_pause">暂停</string>
+    <string name="plugin_audio_recorder_record_audio">录音</string>
+    <string name="plugin_audio_recorder_start_record_fail">启动录音失败!</string>
+    <string name="plugin_audio_recorder_init_audio_player_fail">初始化播放器失败!</string>
+    <string name="plugin_audio_recorder_can_not_play_this_audio_file">无法播放此音频文件!</string>
+    <string name="plugin_audio_recorder_please_stop_record_before_select_clip">请先停止录音再选择!</string>
+    <string name="plugin_audio_no_open_error">文件未打开错误</string>
+    <string name="plugin_audio_parameter_error">参数错误</string>
+    <string name="plugin_audio_info_nofile">文件不支持</string>
+    <string name="plugin_audio_can_not_mount_sdcard">无法加载存储卡</string>
+    <string name="plugin_audio_music_name">无法加载存储卡</string>
+    
+    <!-- uexFileMgr -->
+    <string name="plugin_file_now_loading_folder">正在读取文件夹</string>
+    <string name="plugin_file_can_not_open_this_folder">无法打开此目录!</string>
+    <string name="plugin_file_not_exist">文件不存在!</string>
+    <string name="plugin_file_file_path_error">文件路径错误!</string>
+    <string name="plugin_file_can_not_mount_sdcard">无法加载存储卡</string>
+    <string name="plugin_file_are_you_sure_to_exit_file_explorer">确定退出文件管理器吗</string>
+    <string name="plugin_file_target_directory_is_not_exist_auto_redirect_to_sdcard">目前文件夹不存在,自动定位到SD卡目录!</string>
+    <string name="plugin_file_input_path_is_not_valid_path_redirect_to_sdcard">传入路径不是一个有效的目录,自动定位到SD卡目录!</string>
+    
+</resources>

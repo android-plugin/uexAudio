@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<uexplugins>
+    <plugin
+        uexName="uexAudio" version="3.0.4" build="4">
+		<info>4:修复多次点击播放音效不能关闭的问题</info>
+		<build>3:修复录音文件名不正确</build>
+        <build>2:修复录制失败问题</build>
+        <build>1:背景录音添加录音格式MP3</build>
+        <build>0:音乐播放插件</build>
+    </plugin>
+</uexplugins>

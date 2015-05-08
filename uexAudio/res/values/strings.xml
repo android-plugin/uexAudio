@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    
+	<!-- audio plugin use string -->
+    <string name="plugin_audio_recoreder_recorder">录音机</string>
+    <string name="plugin_audio_recorder_prepare_record">准备录音</string>
+    <string name="plugin_audio_recorder_now_recording">正在录音...</string>
+    <string name="plugin_audio_recorder_now_saving_record">正在保存录音...</string>
+    <string name="plugin_audio_recorder_sdcard_free_space_not_enough">内存卡剩余空间不足!</string>
+    <string name="plugin_audio_play_pause">暂停</string>
+    <string name="plugin_audio_recorder_record_audio">录音</string>
+    <string name="plugin_audio_recorder_start_record_fail">启动录音失败!</string>
+    <string name="plugin_audio_recorder_init_audio_player_fail">初始化播放器失败!</string>
+    <string name="plugin_audio_recorder_can_not_play_this_audio_file">无法播放此音频文件!</string>
+    <string name="plugin_audio_recorder_please_stop_record_before_select_clip">请先停止录音再选择!</string>
+    <string name="plugin_audio_no_open_error">文件未打开错误</string>
+    <string name="plugin_audio_parameter_error">参数错误</string>
+    <string name="plugin_audio_info_nofile">文件不支持</string>
+    <string name="plugin_audio_can_not_mount_sdcard">无法加载存储卡</string>
+    <string name="plugin_audio_music_name">无法加载存储卡</string>
+</resources>

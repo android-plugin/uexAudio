@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/music_file_play_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/plugin_audio_top_bg" >
+
+        <Button
+            android:id="@+id/music_file_play_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/plugin_audio_back_selector"
+            android:gravity="center"
+            android:text="@string/back"
+            android:textColor="@android:color/white" >
+        </Button>
+    </RelativeLayout>
+
+    <!-- 文件列表 -->
+
+    <ListView
+        android:id="@+id/music_file_play_list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#FFFFFFFF"
+        android:cacheColorHint="#00000000"
+        android:divider="#afb3b9"
+        android:dividerHeight="1dip"
+        android:listSelector="@android:color/transparent" >
+    </ListView>
+
+</LinearLayout>

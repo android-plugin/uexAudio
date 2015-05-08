@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+   	
+   	>
+
+    <TextView
+        android:id="@+id/plugin_music_file_list_item_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:textSize="22dip"
+        android:paddingLeft="6dip"
+        android:paddingTop="5dip"
+        android:paddingBottom="5dip"
+    	android:background="@drawable/plugin_audio_file_list_item_back"    
+		android:textColor="@android:color/black" android:singleLine="true"/>
+
+</RelativeLayout>

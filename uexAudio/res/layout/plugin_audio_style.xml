@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#3B3B3B" >
+
+    <!-- 总体框架 -->
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <!-- 背景控件集合 -->
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <!-- 背景左边图块 -->
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="32dip"
+                android:src="@drawable/plugin_audio_special" />
+            <!-- 背景右边图块 -->
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="32dip"
+                android:src="@drawable/plugin_audio_special" />
+            <!-- 背景中间图块 -->
+
+            <ImageView
+                android:id="@+id/music_special_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+
+        <!-- 标题控件集合 -->
+
+        <RelativeLayout
+            android:id="@+id/widget_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/plugin_audio_top_bg" >
+
+            <!-- 返回按钮 button_return -->
+
+            <Button
+                android:id="@+id/plugin_music_button_return"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="13dip"
+                android:background="@drawable/plugin_audio_back_selector"
+                android:text="@string/back"
+                android:textColor="#ffffff" />
+            <!-- 歌曲名称 -->
+
+            <TextView
+                android:id="@+id/plugin_music_name"
+                android:layout_width="170dip"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="@string/plugin_audio_music_name" />
+            
+            <Button
+                android:id="@+id/plugin_music_button_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+               	android:background="@android:drawable/ic_menu_add"
+                 />
+            
+        </RelativeLayout>
+
+        <!-- 上层控件集合 seekbar_style -->
+
+        <RelativeLayout
+            android:id="@+id/widget_top"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/widget_title"
+            android:background="#885c5c5c" >
+
+            <!-- 歌曲进度按钮 seekbar_thumb -->
+
+            <SeekBar
+                android:id="@+id/widget_top_progress_seekBar"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:max="100"
+                android:maxHeight="10dip"
+                android:minHeight="10dip"
+                android:paddingLeft="70dip"
+                android:paddingRight="70dip"
+                android:progressDrawable="@drawable/plugin_audio_seekbar_style"
+                android:thumb="@drawable/plugin_audio_seekbar_thumb_selector" />
+            <!-- 歌曲进度显示 -->
+
+            <TextView
+                android:id="@+id/widget_top_play_time"
+                android:layout_width="70dip"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/widget_top_progress_seekBar"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="00:00"
+                android:textColor="#ffffff" />
+            <!-- 歌曲长度显示 -->
+
+            <TextView
+                android:id="@+id/widget_top_total_time"
+                android:layout_width="70dip"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@id/widget_top_progress_seekBar"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:layout_marginRight="0dp"
+                android:text="00:00"
+                android:textColor="#ffffff" />
+        </RelativeLayout>
+        <!-- 上层控件集合的装饰线 -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/widget_top"
+            android:background="#000000"
+            android:maxHeight="1dip"
+            android:minHeight="1dip" />
+
+        <!-- 底层控件集合 -->
+
+        <RelativeLayout
+            android:id="@+id/widget_bottom"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/plugin_audio_play_bottom_bg" >
+
+            <!-- 左边装饰箭头 -->
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dip"
+                android:src="@drawable/plugin_audio_arrow_left" />
+            <!-- 播放按钮 -->
+
+            <ImageButton
+                android:id="@+id/widget_bottom_button_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="#00000000"
+                android:src="@drawable/plugin_audio_pause_selector" />
+            <!-- 上一首按钮 -->
+
+            <ImageButton
+                android:id="@+id/widget_bottom_button_last"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dip"
+                android:layout_toLeftOf="@id/widget_bottom_button_play"
+                android:background="#00000000"
+                android:src="@drawable/plugin_audio_button_last_style" />
+            <!-- 下一首按钮 -->
+
+            <ImageButton
+                android:id="@+id/widget_bottom_button_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dip"
+                android:layout_toRightOf="@id/widget_bottom_button_play"
+                android:background="#00000000"
+                android:src="@drawable/plugin_audio_button_next_style" />
+            <!-- 右边边装饰箭头 -->
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="50dip"
+                android:src="@drawable/plugin_audio_arrow_right" />
+        </RelativeLayout>
+
+        <!-- 中下层控件集合 -->
+
+        <RelativeLayout
+            android:id="@+id/plugin_centre_bottom"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/widget_bottom" >
+
+            <!-- 歌曲音量进度显示 -->
+
+            <SeekBar
+                android:id="@+id/plugin_centre_bottom_seekBar"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:max="100"
+                android:maxHeight="10dip"
+                android:minHeight="10dip"
+                android:paddingLeft="72dip"
+                android:paddingRight="72dip"
+                android:progressDrawable="@drawable/plugin_audio_seekbar_style"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:thumb="@drawable/plugin_audio_seekbar_volume_thumb" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</FrameLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<uexplugins>
+   <!-- plugin Audio -->
+    <plugin
+        className="org.zywx.wbpalmstar.plugin.uexaudio.EUExAudio"
+        uexName="uexAudio" version="3.0" build="0">
+        <method name="open" />
+        <method name="play" />
+        <method name="pause" />
+        <method name="stop" />
+        <method name="volumeUp" />
+        <method name="volumeDown" />
+        <method name="openPlayer" />
+        <method name="record" />
+        <method name="startBackgroundRecord" />
+        <method name="stopBackgroundRecord" />
+        <method name="openSoundPool" />
+	<method name="addSound" />
+        <method name="playFromSoundPool" />
+        <method name="stopFromSoundPool" />
+	<method name="closeSoundPool" />
+    </plugin>   
+</uexplugins>
