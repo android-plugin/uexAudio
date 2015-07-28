@@ -1,12 +1,5 @@
 package org.zywx.wbpalmstar.plugin.uexaudio;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-//import org.zywx.wbpalmstar.base.BDebug;
-import org.zywx.wbpalmstar.base.FileHelper;
-import org.zywx.wbpalmstar.base.ResoureFinder;
-//import org.zywx.wbpalmstar.widgetone.uex.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -14,21 +7,29 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
+import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
+
+import org.zywx.wbpalmstar.base.FileHelper;
+import org.zywx.wbpalmstar.base.ResoureFinder;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 public class AudioRecorderActivity extends Activity implements OnClickListener, OnSeekBarChangeListener,
 		OnCompletionListener, OnErrorListener {
@@ -36,6 +37,7 @@ public class AudioRecorderActivity extends Activity implements OnClickListener, 
 	public static final String INTENT_KEY_AUDIO_RECORD_SAVE_PATH = "AudioRecordPath";
 	public static final String INTENT_KEY_AUDIO_RECORD_FILENAME = "AudioRecordFileName";
 	public static final String INTENT_KEY_AUDIO_RECORD_RETURN_PATH = "AudioRecordReturnPath";
+	public static final String INTENT_KEY_AUDIO_RECORD_TYPE = "AudioRecordType"; //Android暂时只支持.amr, .mp3格式。对应的数值2代表MP3格式，其它数字，对应amr格式
 	private static final int ACTION_START_RECORD_AUDIO = 1;
 	private static final int ACTION_UPDATE_RECORD_TIME = 2;
 	private static final int ACTION_FINISH_RECORD_AUDIO = 3;
@@ -318,10 +320,11 @@ public class AudioRecorderActivity extends Activity implements OnClickListener, 
 				if (ensureFolderCreated()) {
 					if (FileHelper.getSDcardFreeSpace() > 1048576L) {// 大于1MB
 						String fileName = getIntent().getStringExtra(AudioRecorderActivity.INTENT_KEY_AUDIO_RECORD_FILENAME);
+                        int type = getIntent().getIntExtra(INTENT_KEY_AUDIO_RECORD_TYPE, 0);
 						if(fileName == null || "".equals(fileName)) {
-							currentRecordFile = new File(recordFolder.getAbsolutePath(), formatDateToFileName(System.currentTimeMillis()));
+							currentRecordFile = new File(recordFolder.getAbsolutePath(), formatDateToFileName(System.currentTimeMillis(), type));
 						}else {
-							currentRecordFile = new File(recordFolder.getAbsolutePath(), formatStringToFileName(fileName));
+							currentRecordFile = new File(recordFolder.getAbsolutePath(), formatStringToFileName(fileName, type));
 						}
 						initAndStartMediaRecorder(currentRecordFile.getAbsolutePath());
 					} else {
@@ -395,13 +398,13 @@ public class AudioRecorderActivity extends Activity implements OnClickListener, 
 		releaseMediaPlayer();
 	}
 
-	private String formatDateToFileName(long milliSeconds) {
+	private String formatDateToFileName(long milliSeconds, int type) {
 		final SimpleDateFormat sdf = new SimpleDateFormat("HH-mm-ss");
-		return sdf.format(new Date(milliSeconds)) + ".amr";
+		return sdf.format(new Date(milliSeconds)) + getAudioFileSuffixByType(type);
 	}
 	
-	private String formatStringToFileName(String fileName) {
-		return fileName + ".amr";
+	private String formatStringToFileName(String fileName, int type) {
+		return fileName + getAudioFileSuffixByType(type);
 	}
 
 	private String formatTime(int ms) {
@@ -480,4 +483,11 @@ public class AudioRecorderActivity extends Activity implements OnClickListener, 
 		}
 		return isCreated;
 	}
+    //type: 2 对应的是mp3格式，其它数字对应amr格式
+    private String getAudioFileSuffixByType(int type) {
+        if (type != 2) {
+            return ".amr";
+        }
+        return ".mp3";
+    }
 }

@@ -1,8 +1,9 @@
 package org.zywx.wbpalmstar.plugin.uexaudio;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 
 import org.zywx.wbpalmstar.base.BUtility;
 import org.zywx.wbpalmstar.base.ResoureFinder;
@@ -10,10 +11,9 @@ import org.zywx.wbpalmstar.engine.EBrowserView;
 import org.zywx.wbpalmstar.engine.universalex.EUExBase;
 import org.zywx.wbpalmstar.engine.universalex.EUExCallback;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EUExAudio extends EUExBase {
 	public static final String tag = "uexAudio_";
@@ -168,6 +168,7 @@ public class EUExAudio extends EUExBase {
 		if (path != null && path.length() > 0) {
 			Intent intent = new Intent(mContext, AudioRecorderActivity.class);
 			intent.putExtra(AudioRecorderActivity.INTENT_KEY_AUDIO_RECORD_SAVE_PATH, path);
+			intent.putExtra(AudioRecorderActivity.INTENT_KEY_AUDIO_RECORD_TYPE, Integer.parseInt(parm[0]));
 			intent.putExtra(AudioRecorderActivity.INTENT_KEY_AUDIO_RECORD_FILENAME, parm[1]);
 			startActivityForResult(intent, F_ACT_REQ_CODE_UEX_AUDIO_RECORD);
 		} else {
