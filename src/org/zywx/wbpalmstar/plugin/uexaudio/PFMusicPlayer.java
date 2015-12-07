@@ -45,6 +45,8 @@ public abstract class PFMusicPlayer {
 	
 	private int loopCount = 0;
 	private int loopIndex = 0;
+	
+	private boolean isModeInCall = false;
 
 	public PFMusicPlayer(Context inContext){
 		m_context=inContext;
@@ -52,6 +54,10 @@ public abstract class PFMusicPlayer {
 
 	public int getLoopIndex(){
 		return loopIndex;
+	}
+	
+	public void setModeInCall(boolean isModeInCall){
+		this.isModeInCall = isModeInCall;
 	}
 
 	/*
@@ -111,6 +117,7 @@ public abstract class PFMusicPlayer {
 	public void stopSound(int inStreamID) {
 		if (m_soundPool != null) {
 			m_soundPool.stop( inStreamID );
+			checkModeEnd();
 		}
 	}
 
@@ -133,6 +140,7 @@ public abstract class PFMusicPlayer {
 		@Override
 		public void onCompletion(MediaPlayer mp) {
 			if (loopCount > 0 && loopIndex < loopCount) {
+				checkModeStart();
 				m_mediaPlayer.start();
 				playState = MEDIAPLAY_STATE_PLAYING;
 				onPlayFinished(loopIndex);
@@ -141,6 +149,7 @@ public abstract class PFMusicPlayer {
 				m_mediaPlayer.stop();
 				playState = MEDIAPLAY_STATE_STOPING;
 				onPlayFinished(loopIndex);
+				checkModeEnd();
 			}
 		}
 	}
@@ -167,6 +176,7 @@ public abstract class PFMusicPlayer {
 	public void play(String inPath,int loopType) {
 		if (m_mediaPlayer != null) {
 			try {
+				checkModeStart();
 				switch(playState){
 				case MEDIAPLAY_STATE_STOPING:
 					m_mediaPlayer.reset();
@@ -202,6 +212,7 @@ public abstract class PFMusicPlayer {
 				}
 			} catch (Exception e) {
 				Toast.makeText(m_context, ResoureFinder.getInstance().getStringId(m_context, "plugin_audio_info_nofile"), Toast.LENGTH_LONG).show();
+				checkModeEnd();
 			}
 		}
 	}
@@ -268,6 +279,7 @@ public abstract class PFMusicPlayer {
 		} catch (Exception e) {
 
 		}
+		checkModeEnd();
 	}
 
 	/*
@@ -275,6 +287,7 @@ public abstract class PFMusicPlayer {
 	 */
 	public void replay() {
 		try {
+			checkModeStart();
 			if (m_mediaPlayer != null) {
 				m_mediaPlayer.stop();
 				m_mediaPlayer.prepare();
@@ -298,7 +311,8 @@ public abstract class PFMusicPlayer {
 			}			
 		}catch(Exception e){
 			
-		}		
+		}
+		checkModeEnd();
 	}
 
 	/*
@@ -307,6 +321,7 @@ public abstract class PFMusicPlayer {
 	public void palyNext(String inPath) {
 		if (m_mediaPlayer != null) {
 			try {
+				checkModeStart();
 				switch (playState) {
 				case MEDIAPLAY_STATE_PLAYING:
 				case MEDIAPLAY_STATE_PAUSEING:
@@ -335,7 +350,12 @@ public abstract class PFMusicPlayer {
 	 */
 	public void volumeUp() {
 		AudioManager audioManager = (AudioManager) m_context.getSystemService(Context.AUDIO_SERVICE);
-		audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+		int maxVolum = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);// 最大音量
+		int currentVolum = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);// 当前音量
+		if (currentVolum < maxVolum) {
+			currentVolum++;
+		}
+		audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolum, AudioManager.FLAG_SHOW_UI);
 	}
 
 	/*
@@ -343,6 +363,45 @@ public abstract class PFMusicPlayer {
 	 */
 	public void volumeDown() {
 		AudioManager audioManager = (AudioManager) m_context.getSystemService(Context.AUDIO_SERVICE);
-		audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+		int currentVolum = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);// 当前音量
+		if (currentVolum > 0){
+			currentVolum--;
+		}
+		audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolum, AudioManager.FLAG_SHOW_UI);
+	}
+	
+	public void checkModeStart(){
+		if(isModeInCall){
+			playModeInCall();
+		}
+	}
+	
+	public void checkModeEnd(){
+		if(isModeInCall){
+			playModeNormol();
+		}
+	}
+	
+	/**
+	 * 听筒模式
+	 */
+	private void playModeInCall(){
+		AudioManager audioManager = (AudioManager) m_context.getSystemService(Context.AUDIO_SERVICE);
+		if(audioManager.getMode() == AudioManager.MODE_NORMAL){
+			audioManager.setMode(AudioManager.MODE_IN_CALL);
+			if(audioManager.getMode() == AudioManager.MODE_NORMAL){
+				audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+			}
+		}
+	}
+	
+	/**
+	 * 正常模式
+	 */
+	private void playModeNormol(){
+		AudioManager audioManager = (AudioManager) m_context.getSystemService(Context.AUDIO_SERVICE);
+		if(audioManager.getMode() == AudioManager.MODE_IN_COMMUNICATION || audioManager.getMode() == AudioManager.MODE_IN_CALL){
+			audioManager.setMode(AudioManager.MODE_NORMAL);
+		}
 	}
 }
