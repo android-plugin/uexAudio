@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <uexplugins>
     <plugin
-        uexName="uexAudio" version="3.0.5" build="5">
-        <info>5:修复uexAudio.record方法不支持录音文件存储为.mp3格式的问题</info>
+        uexName="uexAudio" version="3.0.6" build="6">
+        <info>6:添加听筒模式接口,修复小米手机音量设置无效的问题</info>
+        <build>5:修复uexAudio.record方法不支持录音文件存储为.mp3格式的问题</build>
         <build>4:修复多次点击播放音效不能关闭的问题</build>
 		<build>3:修复录音文件名不正确</build>
         <build>2:修复录制失败问题</build>
