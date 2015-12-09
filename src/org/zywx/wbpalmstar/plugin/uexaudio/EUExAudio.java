@@ -1,19 +1,22 @@
 package org.zywx.wbpalmstar.plugin.uexaudio;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.zywx.wbpalmstar.base.BUtility;
 import org.zywx.wbpalmstar.base.ResoureFinder;
 import org.zywx.wbpalmstar.engine.EBrowserView;
 import org.zywx.wbpalmstar.engine.universalex.EUExBase;
 import org.zywx.wbpalmstar.engine.universalex.EUExCallback;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.media.AudioManager;
+import android.util.Log;
 
 public class EUExAudio extends EUExBase {
 	public static final String tag = "uexAudio_";
@@ -31,6 +34,13 @@ public class EUExAudio extends EUExBase {
 	public EUExAudio(Context context, EBrowserView inParent) {
 		super(context, inParent);
 		audioRecorder = new AudioRecorder();
+	}
+	
+	public static void onActivityDestroy(Context context){
+		AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+		if(audioManager.getMode() == AudioManager.MODE_IN_COMMUNICATION || audioManager.getMode() == AudioManager.MODE_IN_CALL){
+			audioManager.setMode(AudioManager.MODE_NORMAL);
+		}
 	}
 
 	/*
@@ -281,6 +291,26 @@ public class EUExAudio extends EUExBase {
 			soundList.removeAll(soundList);
 		}
 	}
+	
+	public void setPlayMode(String[] params){
+		if (params == null || params.length != 1)
+			return;
+		String playMode = "0";
+		try {
+			JSONObject json = new JSONObject(params[0]);
+			playMode = json.getString("playMode");
+		} catch (JSONException e) {
+		}
+		if (m_pfMusicPlayer != null) {
+			m_pfMusicPlayer.setModeInCall("1".equals(playMode));
+		} else {
+			errorCallback(0,
+					EUExCallback.F_E_AUDIO_MUSIC_STOP_NO_OPEN_ERROR_CODE,
+					/* "文件未打开错误" */finder.getString(mContext,
+							"plugin_audio_no_open_error"));
+		}
+	}
+
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {

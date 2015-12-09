@@ -18,6 +18,7 @@
 	<method name="addSound" />
         <method name="playFromSoundPool" />
         <method name="stopFromSoundPool" />
-	<method name="closeSoundPool" />
+		<method name="closeSoundPool" />
+		<method name="setPlayMode" />
     </plugin>   
 </uexplugins>
