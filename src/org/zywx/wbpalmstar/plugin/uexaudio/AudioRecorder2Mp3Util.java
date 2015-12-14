@@ -24,7 +24,7 @@ public class AudioRecorder2Mp3Util {
 	private String rawPath = null;
 	private String mp3Path = null;
 
-	private static final int SAMPLE_RATE = 8000;
+	private static final int SAMPLE_RATE = 44100;
 
 	private short[] mBuffer;
 	private AudioRecord mRecorder;
