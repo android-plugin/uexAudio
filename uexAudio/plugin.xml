@@ -15,7 +15,7 @@
         <method name="startBackgroundRecord" />
         <method name="stopBackgroundRecord" />
         <method name="openSoundPool" />
-	<method name="addSound" />
+		<method name="addSound" />
         <method name="playFromSoundPool" />
         <method name="stopFromSoundPool" />
 		<method name="closeSoundPool" />
