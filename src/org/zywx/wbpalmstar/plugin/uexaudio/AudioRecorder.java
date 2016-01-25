@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import android.media.MediaRecorder;
 
 public class AudioRecorder {
@@ -25,15 +26,18 @@ public class AudioRecorder {
 	 */
 	public boolean startRecord(File folder,int type, String fileName) {
 		boolean isSuc = false;
+		File file = null;
 		if (currentState == STATE_IDLE) {
 			try {
 				backRecordType=type;
 				currentState = STATE_STARTED;
-				File file = null;
 				if(fileName == null || "".equals(fileName)) {
 					file = new File(folder, formatDateToFileName(System.currentTimeMillis()));//文件路径
-				}else {
+				} else {
 					file = new File(folder, formatStringToFileName(fileName));
+					if(file.exists()){
+						file.delete();
+					}
 				}
 				if (type != 2) {
 					startMediaRecord(file);
@@ -43,7 +47,11 @@ public class AudioRecorder {
 				isSuc = true;
 			} catch (Exception e) {
 				currentState = STATE_IDLE;
-				e.printStackTrace();
+				if(file.exists()){
+					file.delete();
+					file = null;
+				}
+				return false;
 			}
 		}
 		return isSuc;
