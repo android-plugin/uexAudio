@@ -158,8 +158,24 @@ function playBackRecord() {
 		uexAudio.play('2');
 
 	}
+	function playMode() {
+		var param = {
+             playMode:'0'
+        };
+        param = JSON.stringify(param);
+	
+		uexAudio.setPlayMode(param);
 
+	}
+	function playMode1() {
+		var param = {
+             playMode:'1'
+        };
+        param = JSON.stringify(param);
+	
+		uexAudio.setPlayMode(param);
 
+	}
 
 	var recordPath;
 
@@ -410,7 +426,11 @@ function playBackRecord() {
 			<div class="tcxx" id="backrecord"></div>
 
 			<input class="btn" type="button" value="播放录音"	onclick="playBackRecord();">
-<br>
+			<br>
+			<input class="btn" type="button" value="设置播放模式(扬声器)"	onclick="playMode();">
+			<br>
+			<input class="btn" type="button" value="设置播放模式(听筒)"	onclick="playMode1();">
+			<br>
 		</div>
 
 	</div>

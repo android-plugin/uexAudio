@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <uexplugins>
 
-    <!-- plugin uexSMS -->
+    <!-- plugin uexAudio -->
     <plugin
         className="org.zywx.wbpalmstar.plugin.uexaudio.EUExAudio"
         uexName="uexAudio" >
@@ -20,6 +20,7 @@
         <method name="playFromSoundPool" />
         <method name="stopFromSoundPool" />
 		<method name="closeSoundPool" />
+		<method name="setPlayMode" />
     </plugin>   
     <!-- uexFileMgr -->
     <plugin
