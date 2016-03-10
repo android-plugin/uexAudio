@@ -9,6 +9,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.AssetFileDescriptor;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -349,7 +353,7 @@ public abstract class PFMusicPlayer {
 	 * 调高音量
 	 */
 	public void volumeUp() {
-		AudioManager audioManager = (AudioManager) m_context.getSystemService(Context.AUDIO_SERVICE);
+		AudioManager audioManager = (AudioManager) m_context.getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
 		int maxVolum = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);// 最大音量
 		int currentVolum = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);// 当前音量
 		if (currentVolum < maxVolum) {
@@ -362,7 +366,7 @@ public abstract class PFMusicPlayer {
 	 * 调低音量
 	 */
 	public void volumeDown() {
-		AudioManager audioManager = (AudioManager) m_context.getSystemService(Context.AUDIO_SERVICE);
+		AudioManager audioManager = (AudioManager) m_context.getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
 		int currentVolum = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);// 当前音量
 		if (currentVolum > 0){
 			currentVolum--;
@@ -386,7 +390,7 @@ public abstract class PFMusicPlayer {
 	 * 听筒模式
 	 */
 	private void playModeInCall(){
-		AudioManager audioManager = (AudioManager) m_context.getSystemService(Context.AUDIO_SERVICE);
+		AudioManager audioManager = (AudioManager) m_context.getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
 		if(audioManager.getMode() == AudioManager.MODE_NORMAL){
 			audioManager.setMode(AudioManager.MODE_IN_CALL);
 			if(audioManager.getMode() == AudioManager.MODE_NORMAL){
@@ -399,9 +403,51 @@ public abstract class PFMusicPlayer {
 	 * 正常模式
 	 */
 	private void playModeNormol(){
-		AudioManager audioManager = (AudioManager) m_context.getSystemService(Context.AUDIO_SERVICE);
+		AudioManager audioManager = (AudioManager) m_context.getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
 		if(audioManager.getMode() == AudioManager.MODE_IN_COMMUNICATION || audioManager.getMode() == AudioManager.MODE_IN_CALL){
 			audioManager.setMode(AudioManager.MODE_NORMAL);
 		}
 	}
+	
+	/**
+	 * make a SensorEventListener
+	 * @return
+	 */
+	public SensorEventListener getSensorEventListener(){
+		return new SensorEventListener() {
+			
+			@Override
+			public void onSensorChanged(SensorEvent event) {
+				float range = event.values[0];
+				SensorManager mSensorManager = (SensorManager) m_context.getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
+				Sensor mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+				if (range == mSensor.getMaximumRange()) {
+					if(m_mediaPlayer != null){
+						if(isModeInCall){
+							return;
+						}else if(m_mediaPlayer.isPlaying()){
+							m_mediaPlayer.pause();
+							playModeNormol();
+							m_mediaPlayer.start();
+						}
+					}
+				} else {
+					if(m_mediaPlayer != null){
+						if(isModeInCall){
+							return;
+						}else if(m_mediaPlayer.isPlaying()){
+							m_mediaPlayer.pause();
+							playModeInCall();
+							m_mediaPlayer.start();
+						}
+					}
+				}
+			}
+			
+			@Override
+			public void onAccuracyChanged(Sensor sensor, int accuracy) {
+			}
+		};
+	}
+	
 }

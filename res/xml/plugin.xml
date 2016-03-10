@@ -21,6 +21,7 @@
         <method name="stopFromSoundPool" />
 		<method name="closeSoundPool" />
 		<method name="setPlayMode" />
+		<method name="setProximityState" />
     </plugin>   
     <!-- uexFileMgr -->
     <plugin

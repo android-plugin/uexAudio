@@ -1,3 +1,21 @@
+/*
+ *  Copyright (C) 2014 The AppCan Open Source Project.
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 package org.zywx.wbpalmstar.plugin.uexaudio;
 
 import java.io.File;
@@ -16,6 +34,9 @@ import org.zywx.wbpalmstar.engine.universalex.EUExCallback;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -30,6 +51,7 @@ public class EUExAudio extends EUExBase {
 	private String m_mediaPath;
 	private ArrayList<Integer> IdsList = new ArrayList<Integer>();
 	private AudioRecorder audioRecorder;
+	private static SensorEventListener sensorEventListener;
 	private boolean start_record_fail = false;
 	private boolean testedPermission = false;
 	private boolean startBackgroundRecord_singleton = true;
@@ -41,8 +63,32 @@ public class EUExAudio extends EUExBase {
 		audioRecorder = new AudioRecorder();
 	}
 	
+	public static void onActivityPause(Context context) {
+		Log.i(tag, "onActivityPause");
+		if (sensorEventListener != null) {
+			SensorManager mSensorManager = (SensorManager) context
+					.getApplicationContext().getSystemService(
+							Context.SENSOR_SERVICE);
+			mSensorManager.unregisterListener(sensorEventListener);
+		}
+	}
+	
+	public static void onActivityReStart(Context context) {
+		Log.i(tag, "onActivityReStart");
+		if (sensorEventListener != null) {
+			SensorManager mSensorManager = (SensorManager) context
+					.getApplicationContext().getSystemService(
+							Context.SENSOR_SERVICE);
+			Sensor mSensor = mSensorManager
+					.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+			mSensorManager.registerListener(sensorEventListener, mSensor,
+					SensorManager.SENSOR_DELAY_NORMAL);
+		}
+	}
+	
 	public static void onActivityDestroy(Context context){
-		AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+		Log.i(tag, "onActivityDestroy");
+		AudioManager audioManager = (AudioManager) context.getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
 		if(audioManager.getMode() == AudioManager.MODE_IN_COMMUNICATION || audioManager.getMode() == AudioManager.MODE_IN_CALL){
 			audioManager.setMode(AudioManager.MODE_NORMAL);
 		}
@@ -402,8 +448,33 @@ public class EUExAudio extends EUExBase {
 							"plugin_audio_no_open_error"));
 		}
 	}
-
-
+	
+	public void setProximityState(String[] params){
+		if (params == null || params.length < 1)
+			return;
+		boolean state = "1".equals(params[0]);
+		SensorManager mSensorManager = (SensorManager) mContext.getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
+		if(!state){
+			if (sensorEventListener != null)
+				mSensorManager.unregisterListener(sensorEventListener);
+			return;
+		}
+		Sensor mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+		if(sensorEventListener == null ){
+			if (m_pfMusicPlayer != null) {
+				sensorEventListener = m_pfMusicPlayer.getSensorEventListener();
+			} else {
+				errorCallback(0,
+						EUExCallback.F_E_AUDIO_MUSIC_STOP_NO_OPEN_ERROR_CODE,
+						/* "文件未打开错误" */finder.getString(mContext,
+								"plugin_audio_no_open_error"));
+				return;
+			}
+		}
+		mSensorManager.registerListener(sensorEventListener, mSensor,
+				SensorManager.SENSOR_DELAY_NORMAL);
+	}
+	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (F_ACT_REQ_CODE_UEX_AUDIO_RECORD == requestCode) {
@@ -423,6 +494,11 @@ public class EUExAudio extends EUExBase {
 			}
 			IdsList.clear();
 			m_pfMusicPlayer = null;
+		}
+		if(sensorEventListener != null){
+			SensorManager mSensorManager = (SensorManager) mContext.getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
+			mSensorManager.unregisterListener(sensorEventListener);
+			sensorEventListener = null;
 		}
 		return true;
 	}
