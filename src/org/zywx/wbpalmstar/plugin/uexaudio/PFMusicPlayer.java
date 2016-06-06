@@ -20,6 +20,7 @@ import android.media.MediaPlayer.OnErrorListener;
 import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
 import android.widget.Toast;
 
 public abstract class PFMusicPlayer {
@@ -380,10 +381,8 @@ public abstract class PFMusicPlayer {
 		}
 	}
 	
-	public void checkModeEnd(){
-		if(isModeInCall){
-			playModeNormol();
-		}
+	public void checkModeEnd() {
+		playModeNormol();
 	}
 	
 	/**
@@ -418,29 +417,35 @@ public abstract class PFMusicPlayer {
 			
 			@Override
 			public void onSensorChanged(SensorEvent event) {
-				float range = event.values[0];
-				SensorManager mSensorManager = (SensorManager) m_context.getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
-				Sensor mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-				if (range == mSensor.getMaximumRange()) {
-					if(m_mediaPlayer != null){
-						if(isModeInCall){
-							return;
-						}else if(m_mediaPlayer.isPlaying()){
-							m_mediaPlayer.pause();
-							playModeNormol();
-							m_mediaPlayer.start();
+				try {
+					float range = event.values[0];
+					SensorManager mSensorManager = (SensorManager) m_context.getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
+					Sensor mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+					Log.i("uexAudio_onSensorChanged",range + "   max:" + mSensor.getMaximumRange());
+					if (range == 0) {
+						if(m_mediaPlayer != null){
+							if(isModeInCall){
+								return;
+							}
+							if(m_mediaPlayer.isPlaying()){
+								m_mediaPlayer.pause();
+								playModeInCall();
+								m_mediaPlayer.start();
+							}
+						}
+					} else {
+						if(m_mediaPlayer != null){
+							if(isModeInCall){
+								return;
+							}
+							if(m_mediaPlayer.isPlaying()){
+								m_mediaPlayer.pause();
+								playModeNormol();
+								m_mediaPlayer.start();
+							}
 						}
 					}
-				} else {
-					if(m_mediaPlayer != null){
-						if(isModeInCall){
-							return;
-						}else if(m_mediaPlayer.isPlaying()){
-							m_mediaPlayer.pause();
-							playModeInCall();
-							m_mediaPlayer.start();
-						}
-					}
+				} catch (Exception e) {
 				}
 			}
 			
