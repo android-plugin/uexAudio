@@ -124,7 +124,7 @@ public class EUExAudio extends EUExBase {
             }
         } else {
             errorCallback(0, EUExCallback.F_E_AUDIO_MUSIC_OPEN_PARAMETER_ERROR_CODE,
-			/* "参数错误" */finder.getString(mContext, "plugin_audio_parameter_error"));
+            /* "参数错误" */finder.getString(mContext, "plugin_audio_parameter_error"));
         }
 
     }
@@ -141,7 +141,7 @@ public class EUExAudio extends EUExBase {
             m_pfMusicPlayer.play(m_mediaPath, loop);
         } else {
             errorCallback(0, EUExCallback.F_E_AUDIO_MUSIC_PLAY_NO_OPEN_ERROR_CODE,
-			/* "文件未打开错误" */finder.getString(mContext, "plugin_audio_no_open_error"));
+            /* "文件未打开错误" */finder.getString(mContext, "plugin_audio_no_open_error"));
         }
     }
 
@@ -153,7 +153,7 @@ public class EUExAudio extends EUExBase {
             m_pfMusicPlayer.pause();
         } else {
             errorCallback(0, EUExCallback.F_E_AUDIO_MUSIC_PAUSE_NO_OPEN_ERROR_CODE,
-			/* "文件未打开错误" */finder.getString(mContext, "plugin_audio_no_open_error"));
+            /* "文件未打开错误" */finder.getString(mContext, "plugin_audio_no_open_error"));
         }
     }
 
@@ -165,7 +165,7 @@ public class EUExAudio extends EUExBase {
             m_pfMusicPlayer.stop();
         } else {
             errorCallback(0, EUExCallback.F_E_AUDIO_MUSIC_STOP_NO_OPEN_ERROR_CODE,
-			/* "文件未打开错误" */finder.getString(mContext, "plugin_audio_no_open_error"));
+            /* "文件未打开错误" */finder.getString(mContext, "plugin_audio_no_open_error"));
         }
     }
 
@@ -177,7 +177,7 @@ public class EUExAudio extends EUExBase {
             m_pfMusicPlayer.volumeUp();
         } else {
             errorCallback(0, EUExCallback.F_E_AUDIO_MUSIC_STOP_NO_OPEN_ERROR_CODE,
-			/* "文件未打开错误" */finder.getString(mContext, "plugin_audio_no_open_error"));
+            /* "文件未打开错误" */finder.getString(mContext, "plugin_audio_no_open_error"));
         }
     }
 
@@ -189,7 +189,7 @@ public class EUExAudio extends EUExBase {
             m_pfMusicPlayer.volumeDown();
         } else {
             errorCallback(0, EUExCallback.F_E_AUDIO_VOLUMEUP_NO_OPEN_ERROR_CODE,
-			/* "文件未打开错误" */finder.getString(mContext, "plugin_audio_no_open_error"));
+            /* "文件未打开错误" */finder.getString(mContext, "plugin_audio_no_open_error"));
         }
     }
 
@@ -220,7 +220,7 @@ public class EUExAudio extends EUExBase {
             mContext.startActivity(intent);
         } else {
             errorCallback(0, EUExCallback.F_E_AUDIO_SOUND_OPENS_PARAMETER_ERROR_CODE,
-			/* "参数出错" */finder.getString(mContext, "plugin_audio_parameter_error"));
+            /* "参数出错" */finder.getString(mContext, "plugin_audio_parameter_error"));
         }
     }
 
@@ -250,6 +250,13 @@ public class EUExAudio extends EUExBase {
 
     }
 
+    public void replay(String params[]){
+        if (m_pfMusicPlayer != null) {
+            m_pfMusicPlayer.replay();
+        } else {
+        }
+    }
+
     /**
      * @author WangJingwei
      * @Data 2016/1/25
@@ -260,7 +267,7 @@ public class EUExAudio extends EUExBase {
         for (String par : parm) {
             BDebug.i(par);
         }
-        if (parm.length != 2) {
+        if (parm.length < 2) {
             return;
         }
         final String audioFolder = mBrwView.getRootWidget().getWidgetPath() + BUtility.F_APP_AUDIO;
@@ -416,11 +423,11 @@ public class EUExAudio extends EUExBase {
                 }
             } else {
                 errorCallback(0, EUExCallback.F_E_AUDIO_SOUND_PLAY_NO_OPEN_ERROR_CODE,
-				/* "文件未打开错误" */finder.getString(mContext, "plugin_audio_no_open_error"));
+                /* "文件未打开错误" */finder.getString(mContext, "plugin_audio_no_open_error"));
             }
         } else {
             errorCallback(0, EUExCallback.F_E_AUDIO_SOUND_PLAY_PARAMETER_ERROR_CODE,
-			/* "参数错误" */finder.getString(mContext, "plugin_audio_parameter_error"));
+            /* "参数错误" */finder.getString(mContext, "plugin_audio_parameter_error"));
         }
     }
 
@@ -440,11 +447,11 @@ public class EUExAudio extends EUExBase {
                 }
             } else {
                 errorCallback(0, EUExCallback.F_E_AUDIO_SOUND_STOP_NO_OPEN_ERROR_CODE,
-				/* "文件未打开错误" */finder.getString(mContext, "plugin_audio_no_open_error"));
+                /* "文件未打开错误" */finder.getString(mContext, "plugin_audio_no_open_error"));
             }
         } else {
             errorCallback(0, EUExCallback.F_E_AUDIO_SOUND_STOP_PARAMETER_ERROR_CODE,
-			/* "参数错误" */finder.getString(mContext, "plugin_audio_parameter_error"));
+            /* "参数错误" */finder.getString(mContext, "plugin_audio_parameter_error"));
         }
     }
 
@@ -472,7 +479,7 @@ public class EUExAudio extends EUExBase {
         } else {
             errorCallback(0,
                     EUExCallback.F_E_AUDIO_MUSIC_STOP_NO_OPEN_ERROR_CODE,
-					/* "文件未打开错误" */finder.getString(mContext,
+                    /* "文件未打开错误" */finder.getString(mContext,
                             "plugin_audio_no_open_error"));
         }
     }
@@ -494,7 +501,7 @@ public class EUExAudio extends EUExBase {
             } else {
                 errorCallback(0,
                         EUExCallback.F_E_AUDIO_MUSIC_STOP_NO_OPEN_ERROR_CODE,
-						/* "文件未打开错误" */finder.getString(mContext,
+                        /* "文件未打开错误" */finder.getString(mContext,
                                 "plugin_audio_no_open_error"));
                 return;
             }
