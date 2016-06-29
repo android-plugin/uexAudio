@@ -38,7 +38,9 @@ import org.zywx.wbpalmstar.engine.universalex.EUExCallback;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class EUExAudio extends EUExBase {
@@ -267,7 +269,7 @@ public class EUExAudio extends EUExBase {
         for (String par : parm) {
             BDebug.i(par);
         }
-        if (parm.length < 2) {
+        if (parm.length<1) {
             return;
         }
         final String audioFolder = mBrwView.getRootWidget().getWidgetPath() + BUtility.F_APP_AUDIO;
@@ -276,7 +278,9 @@ public class EUExAudio extends EUExBase {
                 BDebug.i("thread", Thread.currentThread() + "");
                 TestBackgroundRecord(audioFolder);
             } catch (Exception e) {
-                e.printStackTrace();
+                if (BDebug.DEBUG) {
+                    e.printStackTrace();
+                }
                 start_record_fail = true;
                 Toast.makeText(mContext, "请检查录音权限是否正常开启", Toast.LENGTH_SHORT).show();
                 return;
@@ -285,11 +289,20 @@ public class EUExAudio extends EUExBase {
                 file.delete();
             }
         }
+        String fileName=null;
+        if (parm.length>1){
+            fileName=parm[1];
+        }else {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
+            Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+            String str = formatter.format(curDate);
+            fileName = String.valueOf(str);
+        }
         if (startBackgroundRecord_singleton) {
             // 开始正式录音
             start_record_fail = false;
             testedPermission = true;
-            audioRecorder.startRecord(new File(audioFolder), Integer.valueOf(parm[0]), parm[1]);
+            audioRecorder.startRecord(new File(audioFolder), Integer.valueOf(parm[0]),fileName);
             startBackgroundRecord_singleton = false;
         }
     }
