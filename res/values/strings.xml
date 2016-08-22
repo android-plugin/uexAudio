@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
 
+    <string name="app_name">uexAudio</string>
     <!-- uexAudio -->
     <string name="plugin_audio_recoreder_recorder">录音机</string>
     <string name="plugin_audio_recorder_prepare_record">准备录音</string>
