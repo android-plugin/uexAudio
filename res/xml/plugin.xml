@@ -22,7 +22,9 @@
 		<method name="closeSoundPool" />
 		<method name="setPlayMode" />
 		<method name="setProximityState" />
-    </plugin>   
+		<method name="getCurrentPosition" />
+		<method name="seekTo" />
+    </plugin>
     <!-- uexFileMgr -->
     <plugin
         className="org.zywx.wbpalmstar.plugin.uexfilemgr.EUExFileMgr"

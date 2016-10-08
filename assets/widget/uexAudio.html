@@ -309,7 +309,16 @@ function playBackRecord() {
 
 			}
 
-		
+		function getCurrentPosition(){
+			alert("当前播放位置:"+uexAudio.getCurrentPosition());
+		}
+
+	
+
+		function seekTo(){
+			var position=parseInt(document.getElementById('position').value);
+			uexAudio.seekTo(position);
+		}
 
 		</script>
   </head>
@@ -350,6 +359,9 @@ function playBackRecord() {
 			<span>2.播放音乐</span>
 
 			<input class="btn" type="button" value="音乐播放" onclick="audioMgr(0,'');">
+			<span>3.获取当前播放位置</span>
+
+			<input class="btn" type="button" value="获取当前播放位置" onclick="getCurrentPosition();">
 
 			<span>4.停止播放</span>
 
@@ -358,6 +370,9 @@ function playBackRecord() {
 			<span>5.暂停播放</span>
 
 			<input class="btn" type="button" value="暂停播放" onclick="audioMgr(3,'');">
+			<span>6.定位播放</span>
+			<input id="position" type="text" value="">
+			<input class="btn" type="button" value="定位播放" onclick="seekTo();">
 
 			<span>7.声音 +</span>
 
