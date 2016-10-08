@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <uexplugins>
-    <plugin
-        uexName="uexAudio" version="3.0.9" build="9">
-        <info>9:修复听筒感应功能在部分手机上无法还原正常模式的问题</info>
-        <build>8:添加传感器设置接口,可设置听筒感应</build>
-        <build>7:解决了录音时用户禁止其权限的问题</build>
-        <build>6:添加听筒模式接口,修复小米手机音量设置无效的问题</build>
-        <build>5:修复uexAudio.record方法不支持录音文件存储为.mp3格式的问题</build>
-        <build>4:修复多次点击播放音效不能关闭的问题</build>
-		<build>3:修复录音文件名不正确</build>
-        <build>2:修复录制失败问题</build>
-        <build>1:背景录音添加录音格式MP3</build>
-        <build>0:音乐播放插件</build>
-    </plugin>
+<plugin
+    uexName="uexAudio" version="3.1.0" build="10">  
+    <info>10:添加获取当前播放位置和seekTo接口</info>
+    <info>9:修复听筒感应功能在部分手机上无法还原正常模式的问题</info>
+    <build>8:添加传感器设置接口,可设置听筒感应</build>
+    <build>7:解决了录音时用户禁止其权限的问题</build>
+    <build>6:添加听筒模式接口,修复小米手机音量设置无效的问题</build>
+    <build>5:修复uexAudio.record方法不支持录音文件存储为.mp3格式的问题</build>
+    <build>4:修复多次点击播放音效不能关闭的问题</build>
+    <build>3:修复录音文件名不正确</build>
+    <build>2:修复录制失败问题</build>
+    <build>1:背景录音添加录音格式MP3</build>
+    <build>0:音乐播放插件</build>
+</plugin>
 </uexplugins>

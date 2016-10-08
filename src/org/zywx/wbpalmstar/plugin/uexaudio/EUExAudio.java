@@ -18,19 +18,6 @@
 
 package org.zywx.wbpalmstar.plugin.uexaudio;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.zywx.wbpalmstar.base.BUtility;
-import org.zywx.wbpalmstar.base.ResoureFinder;
-import org.zywx.wbpalmstar.engine.EBrowserView;
-import org.zywx.wbpalmstar.engine.universalex.EUExBase;
-import org.zywx.wbpalmstar.engine.universalex.EUExCallback;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -41,8 +28,22 @@ import android.media.AudioManager;
 import android.util.Log;
 import android.widget.Toast;
 
-public class EUExAudio extends EUExBase {
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.zywx.wbpalmstar.base.BUtility;
+import org.zywx.wbpalmstar.base.ResoureFinder;
+import org.zywx.wbpalmstar.engine.EBrowserView;
+import org.zywx.wbpalmstar.engine.universalex.EUExBase;
+import org.zywx.wbpalmstar.engine.universalex.EUExCallback;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+	public class EUExAudio extends EUExBase {
 	public static final String tag = "uexAudio_";
+	public static final String FUNC_GET_POSITION_CALLBACK = "uexAudio.cbGetCurrentPosition";
 	public static final int F_ACT_REQ_CODE_UEX_AUDIO_RECORD = 4;
 	public static final String F_CALLBACK_NAME_AUDIO_RECORD = "uexAudio.cbRecord";
 	public static final String F_CALLBACK_NAME_AUDIO_BACKGROUND_RECORD = "uexAudio.cbBackgroundRecord";
@@ -139,6 +140,22 @@ public class EUExAudio extends EUExBase {
 		} else {
 			errorCallback(0, EUExCallback.F_E_AUDIO_MUSIC_PLAY_NO_OPEN_ERROR_CODE,
 			/* "文件未打开错误" */finder.getString(mContext, "plugin_audio_no_open_error"));
+		}
+	}
+
+	/*
+	 * 跳转到指定位置播放音乐接口
+	 */
+	public void seekTo(String[] parm) {
+		if(parm.length != 1 && parm.length != 2)
+			return ;
+		int loop = parm.length == 1 ? 0 : Integer.parseInt(parm[1]);//兼容只有一个参数（如果只有一个参数，loop默认为0）
+		int position=Integer.parseInt(parm[0]);
+		if (m_pfMusicPlayer != null) {
+			m_pfMusicPlayer.seekTo(position,m_mediaPath,loop);
+		} else {
+			errorCallback(0, EUExCallback.F_E_AUDIO_MUSIC_PLAY_NO_OPEN_ERROR_CODE,
+		/* "文件未打开错误" */finder.getString(mContext, "plugin_audio_no_open_error"));
 		}
 	}
 
@@ -501,5 +518,17 @@ public class EUExAudio extends EUExBase {
 			sensorEventListener = null;
 		}
 		return true;
+	}
+	/**
+	 * 获取当前播放位置
+	 */
+	public int getCurrentPosition(String[] params){
+		int position;
+		if (m_pfMusicPlayer == null) {
+			position=0;
+		}
+		position=m_pfMusicPlayer.getCurrentPosition();
+		Log.i(tag,"EUExAudio getCurrentPosition:"+position);
+		return position;
 	}
 }

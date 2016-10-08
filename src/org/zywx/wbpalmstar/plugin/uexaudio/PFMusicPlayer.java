@@ -24,7 +24,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 public abstract class PFMusicPlayer {
-	
+	private static final String TAG ="PFMusicPlayer";
 	public final static String F_SDKARD_PATH = "/sdcard/";//SD卡
 	public final static String F_RES_PATH = "file:///res/";//工程的assets文件夹下
 	public final static String F_DATA_PATH = "file:///data/";
@@ -221,6 +221,8 @@ public abstract class PFMusicPlayer {
 			}
 		}
 	}
+
+
 	
 	private AlertDialog alertDialog;
 
@@ -350,6 +352,70 @@ public abstract class PFMusicPlayer {
 		}
 	}
 
+	/**
+	 *  获取当前播放位置
+     */
+	public int getCurrentPosition(){
+		Log.i(TAG,"getCurrentPosition");
+		if(m_mediaPlayer==null){
+			Log.i(TAG,"media player is not init");
+			return 0;
+		}
+		return m_mediaPlayer.getCurrentPosition();
+	}
+	/**
+	 * 跳转到指定位置播放音频
+	 * @param inPath 音频源文件路径
+	 * @param loopType 循环播放
+	 * @param position 跳转播放目标位置单位MS
+     */
+	public void seekTo(int position,String inPath,int loopType){
+		if (m_mediaPlayer != null) {
+			try {
+				checkModeStart();
+				switch(playState){
+					case MEDIAPLAY_STATE_STOPING:
+						m_mediaPlayer.reset();
+						if (loadMediaPlayerFile(inPath)) {// 读取文件成功才执行
+							m_mediaPlayer.prepare();
+							switch (loopType) {
+								case -1:
+									m_mediaPlayer.setLooping(true);
+									loopCount = 0;
+									loopIndex = 0;
+									break;
+								case 0:
+									m_mediaPlayer.setLooping(false);
+									loopCount = 0;
+									loopIndex = 0;
+									break;
+								default:
+									if(loopType>0){
+										m_mediaPlayer.setLooping(false);
+										loopCount = loopType-1;
+										loopIndex = 0;
+									}
+									break;
+							}
+							m_mediaPlayer.seekTo(position);
+							m_mediaPlayer.start();
+							playState = MEDIAPLAY_STATE_PLAYING;
+						}
+						break;
+					case MEDIAPLAY_STATE_PLAYING:
+					case MEDIAPLAY_STATE_PAUSEING:
+						m_mediaPlayer.seekTo(position);
+						m_mediaPlayer.start();
+						playState=MEDIAPLAY_STATE_PLAYING;
+						break;
+				}
+			} catch (Exception e) {
+				Toast.makeText(m_context, ResoureFinder.getInstance().getStringId(m_context, "plugin_audio_info_nofile"), Toast.LENGTH_LONG).show();
+				checkModeEnd();
+			}
+		}
+	}
+
 	/*
 	 * 调高音量
 	 */
@@ -421,7 +487,7 @@ public abstract class PFMusicPlayer {
 					float range = event.values[0];
 					SensorManager mSensorManager = (SensorManager) m_context.getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
 					Sensor mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-					Log.i("uexAudio_onSensorChanged",range + "   max:" + mSensor.getMaximumRange());
+					Log.i("onSensorChanged",range + "   max:" + mSensor.getMaximumRange());
 					if (range == 0) {
 						if(m_mediaPlayer != null){
 							if(isModeInCall){
