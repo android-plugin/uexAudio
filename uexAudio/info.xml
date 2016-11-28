@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <uexplugins>
-    <plugin
-        build="10" uexName="uexAudio" version="4.0.0">
-        <info>10:4.0</info>
+    <plugin uexName="uexAudio" version="4.0.1" build="11">
+        <info>11:修复play参数传-1不循环播放的问题</info>
+        <build>10:4.0</build>
         <build>9:修复听筒感应功能在部分手机上无法还原正常模式的问题</build>
         <build>8:添加传感器设置接口,可设置听筒感应</build>
         <build>7:解决了录音时用户禁止其权限的问题</build>
