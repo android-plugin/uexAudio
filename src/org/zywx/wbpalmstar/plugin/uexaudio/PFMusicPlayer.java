@@ -145,7 +145,13 @@ public abstract class PFMusicPlayer {
     class mediaPlayerCompletionListener implements OnCompletionListener {
         @Override
         public void onCompletion(MediaPlayer mp) {
-            if (loopCount > 0 && loopIndex < loopCount) {
+            if(loopCount == -1){
+                checkModeStart();
+                m_mediaPlayer.start();
+                playState = MEDIAPLAY_STATE_PLAYING;
+                onPlayFinished(loopIndex);
+                loopIndex++;
+            }else if (loopCount > 0 && loopIndex < loopCount) {
                 checkModeStart();
                 m_mediaPlayer.start();
                 playState = MEDIAPLAY_STATE_PLAYING;
@@ -192,7 +198,7 @@ public abstract class PFMusicPlayer {
                             switch (loopType) {
                                 case -1:
                                     m_mediaPlayer.setLooping(true);
-                                    loopCount = 0;
+                                    loopCount = -1;
                                     loopIndex = 0;
                                     break;
                                 case 0:
