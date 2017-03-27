@@ -155,8 +155,8 @@ public abstract class PFMusicPlayer {
                 checkModeStart();
                 m_mediaPlayer.start();
                 playState = MEDIAPLAY_STATE_PLAYING;
-                onPlayFinished(loopIndex);
                 loopIndex++;
+                onPlayFinished(loopIndex);
             } else {
                 m_mediaPlayer.stop();
                 playState = MEDIAPLAY_STATE_STOPING;
