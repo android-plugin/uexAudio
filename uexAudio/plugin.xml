@@ -2,7 +2,7 @@
 <uexplugins>
     <!-- plugin Audio -->
     <plugin build="0" className="org.zywx.wbpalmstar.plugin.uexaudio.EUExAudio"
-        uexName="uexAudio" version="3.0">
+        uexName="uexAudio" version="4.0">
         <method name="open" />
         <method name="play" />
         <method name="pause" />

@@ -321,9 +321,13 @@ public abstract class PFMusicPlayer {
     public void stop() {
         try {
             if (m_mediaPlayer != null) {
+				boolean isPlaying = m_mediaPlayer.isPlaying();
                 m_mediaPlayer.stop();
                 playState = MEDIAPLAY_STATE_STOPING;
-            }
+				if (isPlaying) {
+					onPlayFinished(loopIndex);
+				}
+			}			
         } catch (Exception e) {
 
         }
