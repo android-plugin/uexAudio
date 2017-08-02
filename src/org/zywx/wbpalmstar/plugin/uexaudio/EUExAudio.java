@@ -30,6 +30,7 @@ import org.zywx.wbpalmstar.base.ResoureFinder;
 import org.zywx.wbpalmstar.engine.EBrowserView;
 import org.zywx.wbpalmstar.engine.universalex.EUExBase;
 import org.zywx.wbpalmstar.engine.universalex.EUExCallback;
+import org.zywx.wbpalmstar.engine.universalex.EUExUtil;
 
 import android.app.Activity;
 import android.content.Context;
@@ -259,7 +260,7 @@ public class EUExAudio extends EUExBase {
 			} catch (Exception e) {
 				e.printStackTrace();
 				start_record_fail = true;
-				Toast.makeText(mContext, "请检查录音权限是否正常开启", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext, EUExUtil.getResStringID("plugin_audio_permission_denied"), Toast.LENGTH_SHORT).show();
 				return;
 			} finally {
 				File file = new File(audioFolder + "testPermission.amr");
@@ -277,7 +278,7 @@ public class EUExAudio extends EUExBase {
 
 	private void TestBackgroundRecord(String audioFolder) throws Exception {
 		audioRecorder.startRecord(new File(audioFolder), 1, "testPermission");
-		Thread.sleep(300);//模拟录音300毫秒，以用来判断是否可录音。
+		Thread.sleep(700);//模拟录音300毫秒，以用来判断是否可录音。华为Mate8的判断需要700mm+
 		audioRecorder.stopRecord();
 		long size = 0;
 		String recordFile = audioRecorder.getRecordFile();
