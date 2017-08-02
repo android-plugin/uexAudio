@@ -181,7 +181,9 @@ function playBackRecord() {
 
 		window.uexOnload = function(){
 
-
+		uexAudio.onPermissionDenied = function(data){
+			alert("onPermissionDenied : " + JSON.stringify(data));
+		}
 
 		uexAudio.cbBackgroundRecord = function(opCode, dataType, data) {
 

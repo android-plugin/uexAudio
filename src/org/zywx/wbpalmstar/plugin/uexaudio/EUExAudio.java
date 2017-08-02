@@ -48,6 +48,7 @@ public class EUExAudio extends EUExBase {
 	public static final String F_CALLBACK_NAME_AUDIO_RECORD = "uexAudio.cbRecord";
 	public static final String F_CALLBACK_NAME_AUDIO_BACKGROUND_RECORD = "uexAudio.cbBackgroundRecord";
 	public static final String FINISHED = "uexAudio.onPlayFinished";
+	private static final String FUNC_ON_PERMISSION_DENIED = "uexAudio.onPermissionDenied";
 	private PFMusicPlayer m_pfMusicPlayer = null;
 	private String m_mediaPath;
 	private ArrayList<Integer> IdsList = new ArrayList<Integer>();
@@ -261,6 +262,7 @@ public class EUExAudio extends EUExBase {
 				e.printStackTrace();
 				start_record_fail = true;
 				Toast.makeText(mContext, EUExUtil.getResStringID("plugin_audio_permission_denied"), Toast.LENGTH_SHORT).show();
+				callbackRecordPermissionDenied();
 				return;
 			} finally {
 				File file = new File(audioFolder + "testPermission.amr");
@@ -502,5 +504,22 @@ public class EUExAudio extends EUExBase {
 			sensorEventListener = null;
 		}
 		return true;
+	}
+
+	private void callbackRecordPermissionDenied(){
+		String errorData = "{\"errCode\":\"1\",\"info\":\"" + EUExUtil.getString("plugin_audio_permission_denied") + "\"}";
+		jsCallbackJsonObject(FUNC_ON_PERMISSION_DENIED,errorData);
+	}
+
+	/**
+	 * javaScript json object callback
+	 *
+	 * @param jsCallbackName callback name
+	 * @param data callback data
+	 */
+	private void jsCallbackJsonObject(String jsCallbackName, String data) {
+		String js = SCRIPT_HEADER + "if(" + jsCallbackName + "){"
+				+ jsCallbackName + "(" + data + ");}";
+		onCallback(js);
 	}
 }
