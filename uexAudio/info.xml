@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <uexplugins>
     <plugin
-        uexName="uexAudio" version="3.0.10.2" build="10">
+        uexName="uexAudio" version="3.0.11" build="11">
         <info>11:修复华为设备录音报无权限的问题,添加英文环境资源包,新增权限拒绝监听回调</info>
         <build>10:增加停止正在播放音频后的回调函数</build>
         <build>9:修复听筒感应功能在部分手机上无法还原正常模式的问题</build>
