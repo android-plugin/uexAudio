@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <uexplugins>
-    <plugin uexName="uexAudio" version="4.0.2" build="12">
-        <info>12:修改onPlayFinished 次数从1开始</info>
+    <plugin uexName="uexAudio" version="4.0.3" build="13">
+        <info>13:增加停止正在播放音频后的回调函数</info>
+        <build>12:修改onPlayFinished 次数从1开始</build>
         <build>11:修复play参数传-1不循环播放的问题</build>
         <build>10:4.0</build>
         <build>9:修复听筒感应功能在部分手机上无法还原正常模式的问题</build>
