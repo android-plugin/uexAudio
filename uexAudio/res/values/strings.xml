@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
-    
-	<!-- audio plugin use string -->
+
+    <!-- audio plugin use string -->
     <string name="plugin_audio_recoreder_recorder">录音机</string>
     <string name="plugin_audio_recorder_prepare_record">准备录音</string>
     <string name="plugin_audio_recorder_now_recording">正在录音...</string>
@@ -18,4 +18,5 @@
     <string name="plugin_audio_info_nofile">文件不支持</string>
     <string name="plugin_audio_can_not_mount_sdcard">无法加载存储卡</string>
     <string name="plugin_audio_music_name">无法加载存储卡</string>
+    <string name="plugin_audio_permission_denied">请检查录音权限是否正常开启</string>
 </resources>

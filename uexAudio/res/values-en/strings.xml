@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- audio plugin use string -->
+    <string name="plugin_audio_recoreder_recorder">Recorder</string>
+    <string name="plugin_audio_recorder_prepare_record">Preparing For Recording</string>
+    <string name="plugin_audio_recorder_now_recording">Recording ...</string>
+    <string name="plugin_audio_recorder_now_saving_record">Saving Recording ...</string>
+    <string name="plugin_audio_recorder_sdcard_free_space_not_enough">Insufficient Memory Card Space!</string>
+    <string name="plugin_audio_play_pause">Pause</string>
+    <string name="plugin_audio_recorder_record_audio">Record</string>
+    <string name="plugin_audio_recorder_start_record_fail">Failed to start recording!</string>
+    <string name="plugin_audio_recorder_init_audio_player_fail">Failed to initialize player!</string>
+    <string name="plugin_audio_recorder_can_not_play_this_audio_file">Unable to play this audio file!</string>
+    <string name="plugin_audio_recorder_please_stop_record_before_select_clip">Please stop recording before select clip!</string>
+    <string name="plugin_audio_no_open_error">File not open error</string>
+    <string name="plugin_audio_parameter_error">Error Parameter</string>
+    <string name="plugin_audio_info_nofile">File Not Supported</string>
+    <string name="plugin_audio_can_not_mount_sdcard">Unable to load memory card</string>
+    <string name="plugin_audio_music_name">Unable to load memory card</string>
+    <string name="plugin_audio_permission_denied">Please check that the recording permission is open properly</string>
+</resources>

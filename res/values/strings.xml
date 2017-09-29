@@ -64,6 +64,7 @@
     <string name="plugin_audio_info_nofile">文件不支持</string>
     <string name="plugin_audio_can_not_mount_sdcard">无法加载存储卡</string>
     <string name="plugin_audio_music_name">无法加载存储卡</string>
+    <string name="plugin_audio_permission_denied">请检查录音权限是否正常开启</string>
     
     <!-- uexFileMgr -->
     <string name="plugin_file_now_loading_folder">正在读取文件夹</string>
