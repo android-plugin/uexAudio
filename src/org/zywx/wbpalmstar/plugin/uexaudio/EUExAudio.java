@@ -35,6 +35,7 @@ import org.zywx.wbpalmstar.base.ResoureFinder;
 import org.zywx.wbpalmstar.engine.EBrowserView;
 import org.zywx.wbpalmstar.engine.universalex.EUExBase;
 import org.zywx.wbpalmstar.engine.universalex.EUExCallback;
+import org.zywx.wbpalmstar.engine.universalex.EUExUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -49,6 +50,7 @@ public class EUExAudio extends EUExBase {
     public static final String F_CALLBACK_NAME_AUDIO_RECORD = "uexAudio.cbRecord";
     public static final String F_CALLBACK_NAME_AUDIO_BACKGROUND_RECORD = "uexAudio.cbBackgroundRecord";
     public static final String FINISHED = "uexAudio.onPlayFinished";
+    private static final String FUNC_ON_PERMISSION_DENIED = "uexAudio.onPermissionDenied";
     private PFMusicPlayer m_pfMusicPlayer = null;
     private String m_mediaPath;
     private ArrayList<Integer> IdsList = new ArrayList<Integer>();
@@ -269,7 +271,7 @@ public class EUExAudio extends EUExBase {
         for (String par : parm) {
             BDebug.i(par);
         }
-        if (parm.length<1) {
+        if (parm.length < 1) {
             return;
         }
         final String audioFolder = mBrwView.getRootWidget().getWidgetPath() + BUtility.F_APP_AUDIO;
@@ -282,17 +284,18 @@ public class EUExAudio extends EUExBase {
                     e.printStackTrace();
                 }
                 start_record_fail = true;
-                Toast.makeText(mContext, "请检查录音权限是否正常开启", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, EUExUtil.getResStringID("plugin_audio_permission_denied"), Toast.LENGTH_SHORT).show();
+                callbackRecordPermissionDenied();
                 return;
             } finally {
                 File file = new File(audioFolder + "testPermission.amr");
                 file.delete();
             }
         }
-        String fileName=null;
-        if (parm.length>1){
-            fileName=parm[1];
-        }else {
+        String fileName = null;
+        if (parm.length > 1) {
+            fileName = parm[1];
+        } else {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
             Date curDate = new Date(System.currentTimeMillis());//获取当前时间
             String str = formatter.format(curDate);
@@ -309,7 +312,7 @@ public class EUExAudio extends EUExBase {
 
     private void TestBackgroundRecord(String audioFolder) throws Exception {
         audioRecorder.startRecord(new File(audioFolder), 1, "testPermission");
-        Thread.sleep(300);//模拟录音300毫秒，以用来判断是否可录音。
+        Thread.sleep(700);//模拟录音300毫秒，以用来判断是否可录音。华为Mate8的判断需要700mm+
         audioRecorder.stopRecord();
         long size = 0;
         String recordFile = audioRecorder.getRecordFile();
@@ -553,5 +556,22 @@ public class EUExAudio extends EUExBase {
             sensorEventListener = null;
         }
         return true;
+    }
+
+    private void callbackRecordPermissionDenied() {
+        String errorData = "{\"errCode\":\"1\",\"info\":\"" + EUExUtil.getString("plugin_audio_permission_denied") + "\"}";
+        jsCallbackJsonObject(FUNC_ON_PERMISSION_DENIED, errorData);
+    }
+
+    /**
+     * javaScript json object callback
+     *
+     * @param jsCallbackName callback name
+     * @param data           callback data
+     */
+    private void jsCallbackJsonObject(String jsCallbackName, String data) {
+        String js = SCRIPT_HEADER + "if(" + jsCallbackName + "){"
+                + jsCallbackName + "(" + data + ");}";
+        onCallback(js);
     }
 }
