@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <uexplugins>
-    <plugin uexName="uexAudio" version="4.0.4" build="14">
-        <info>14:新增录音权限拒绝监听回调,添加英文资源包,修复报无权限的问题</info>
+    <plugin uexName="uexAudio" version="4.3.15" build="15">
+        <info>15:修改引擎版本升级到26之后，录音权限的动态申请</info>
+        <build>14:新增录音权限拒绝监听回调,添加英文资源包,修复报无权限的问题</build>
         <build>13:增加停止正在播放音频后的回调函数</build>
         <build>12:修改onPlayFinished 次数从1开始</build>
         <build>11:修复play参数传-1不循环播放的问题</build>

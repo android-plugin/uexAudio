@@ -18,13 +18,16 @@
 
 package org.zywx.wbpalmstar.plugin.uexaudio;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.AudioManager;
+import android.support.annotation.NonNull;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -261,6 +264,22 @@ public class EUExAudio extends EUExBase {
         }
     }
 
+private  String [] startRecondAudio;
+    @Override
+    public void onRequestPermissionResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionResult(requestCode, permissions, grantResults);
+        if(requestCode==REQUESTPERMISSIONRECORD_AUDIO) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission Granted 授予权限
+                startRecondAudio(startRecondAudio);
+            } else {
+                // Permission Denied 权限被拒绝
+                Toast.makeText(mContext, "为了不影响本功能的使用，请开启耳机的麦克权限!",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     /**
      * @author WangJingwei
      * @Data 2016/1/25
@@ -274,10 +293,21 @@ public class EUExAudio extends EUExBase {
         if (parm.length < 1) {
             return;
         }
+        startRecondAudio=parm;
+        String message="允许程序录制声音通过手机或耳机的麦克";
+        requsetPerssions(Manifest.permission.RECORD_AUDIO,message,REQUESTPERMISSIONRECORD_AUDIO);
+
+
+    }
+
+    private static final int REQUESTPERMISSIONRECORD_AUDIO=5;
+
+    private void startRecondAudio(String[] parm) {
         final String audioFolder = mBrwView.getRootWidget().getWidgetPath() + BUtility.F_APP_AUDIO;
         if (!testedPermission) {
             try {
                 BDebug.i("thread", Thread.currentThread() + "");
+
                 TestBackgroundRecord(audioFolder);
             } catch (Exception e) {
                 if (BDebug.DEBUG) {
