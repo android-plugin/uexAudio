@@ -27,6 +27,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.AudioManager;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
@@ -271,7 +272,7 @@ private  String [] startRecondAudio;
         if(requestCode==REQUESTPERMISSIONRECORD_AUDIO) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission Granted 授予权限
-                startRecondAudio(startRecondAudio);
+                internalStartBackgroundRecordAudio(startRecondAudio);
             } else {
                 // Permission Denied 权限被拒绝
                 Toast.makeText(mContext, "为了不影响本功能的使用，请开启耳机的麦克权限!",
@@ -302,26 +303,33 @@ private  String [] startRecondAudio;
 
     private static final int REQUESTPERMISSIONRECORD_AUDIO=5;
 
-    private void startRecondAudio(String[] parm) {
+    private void internalStartBackgroundRecordAudio(String[] parm) {
         final String audioFolder = mBrwView.getRootWidget().getWidgetPath() + BUtility.F_APP_AUDIO;
-        if (!testedPermission) {
-            try {
-                BDebug.i("thread", Thread.currentThread() + "");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            // 如果是Android6.0或者以上的系统版本，就直接使用系统自带的权限检测机制了，不再使用老式检测方法。
+            BDebug.d(tag, "internalStartBackgroundRecordAudio Android 6.0+");
+        }else{
+            // 6.0以下系统还需要通过小段录音来检测是否具有录音权限
+            if (!testedPermission) {
+                try {
+                    BDebug.i("thread", Thread.currentThread() + "");
 
-                TestBackgroundRecord(audioFolder);
-            } catch (Exception e) {
-                if (BDebug.DEBUG) {
-                    e.printStackTrace();
+                    TestBackgroundRecord(audioFolder);
+                } catch (Exception e) {
+                    if (BDebug.DEBUG) {
+                        e.printStackTrace();
+                    }
+                    start_record_fail = true;
+                    Toast.makeText(mContext, EUExUtil.getResStringID("plugin_audio_permission_denied"), Toast.LENGTH_SHORT).show();
+                    callbackRecordPermissionDenied();
+                    return;
+                } finally {
+                    File file = new File(audioFolder + "testPermission.amr");
+                    file.delete();
                 }
-                start_record_fail = true;
-                Toast.makeText(mContext, EUExUtil.getResStringID("plugin_audio_permission_denied"), Toast.LENGTH_SHORT).show();
-                callbackRecordPermissionDenied();
-                return;
-            } finally {
-                File file = new File(audioFolder + "testPermission.amr");
-                file.delete();
             }
         }
+
         String fileName = null;
         if (parm.length > 1) {
             fileName = parm[1];
@@ -355,14 +363,14 @@ private  String [] startRecondAudio;
         }
         BDebug.i("test size", size + "");
         if ((recordFile == null) || (recordFile.endsWith(".amr") && size <= 30)) {
-            throw new myAudioPermissionException("AudioPermission maybe denied, please accept audio permission");
+            throw new MyAudioPermissionException("AudioPermission maybe denied, please accept audio permission");
         }
     }
 
-    private class myAudioPermissionException extends Exception {
+    private static class MyAudioPermissionException extends Exception {
         private static final long serialVersionUID = 1L;
 
-        public myAudioPermissionException(String detailMessage) {
+        public MyAudioPermissionException(String detailMessage) {
             super(detailMessage);
         }
     }
