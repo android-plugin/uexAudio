@@ -18,12 +18,12 @@
 
 package org.zywx.wbpalmstar.plugin.uexaudio;
 
+import android.media.MediaRecorder;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import android.media.MediaRecorder;
 
 public class AudioRecorder {
 
@@ -57,6 +57,7 @@ public class AudioRecorder {
 						file.delete();
 					}
 				}
+				// 0-amr 2-mp3
 				if (type != 2) {
 					startMediaRecord(file);
 				} else {
@@ -100,7 +101,7 @@ public class AudioRecorder {
 		}
 		util.cleanFile(AudioRecorder2Mp3Util.MP3 | AudioRecorder2Mp3Util.RAW);//清除MP3和raw文件
 		util.startRecording();//开始录音
-		recordFile = util.getFilePath(0X00000002);
+		recordFile = util.getFilePath(AudioRecorder2Mp3Util.MP3);
 	}
 
 	private String formatDateToFileName(long milliSeconds) {

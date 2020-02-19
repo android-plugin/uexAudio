@@ -18,19 +18,19 @@
 
 package org.zywx.wbpalmstar.plugin.uexaudio;
 
-import java.io.BufferedOutputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import com.pocketdigi.utils.FLameUtils;
-
 import android.app.Activity;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.util.Log;
+
+import com.wsgh.androidutils.mp3lame.MP3LameUtils;
+
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class AudioRecorder2Mp3Util {
 
@@ -88,7 +88,7 @@ public class AudioRecorder2Mp3Util {
 		mRecorder.stop();
 		isRecording = false;
 
-		FLameUtils lameUtils = new FLameUtils(1, SAMPLE_RATE, 96);
+		MP3LameUtils lameUtils = new MP3LameUtils(1, SAMPLE_RATE, 96);
 		convertOk = lameUtils.raw2mp3(rawPath, mp3Path);
 
 		return isRecording ^ convertOk;// convertOk==true,return true
