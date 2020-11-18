@@ -54,6 +54,7 @@ public class EUExAudio extends EUExBase {
     public static final String F_CALLBACK_NAME_AUDIO_RECORD = "uexAudio.cbRecord";
     public static final String F_CALLBACK_NAME_AUDIO_BACKGROUND_RECORD = "uexAudio.cbBackgroundRecord";
     public static final String FINISHED = "uexAudio.onPlayFinished";
+    public static final String PLAY_ERROR = "uexAudio.onPlayError";
     private static final String FUNC_ON_PERMISSION_DENIED = "uexAudio.onPermissionDenied";
     private PFMusicPlayer m_pfMusicPlayer = null;
     private String m_mediaPath;
@@ -120,6 +121,12 @@ public class EUExAudio extends EUExBase {
                     @Override
                     public void onPlayFinished(int index) {
                         String js = SCRIPT_HEADER + "if(" + FINISHED + "){" + FINISHED + "(" + index + ");}";
+                        onCallback(js);
+                    }
+
+                    @Override
+                    public void onPlayError() {
+                        String js = SCRIPT_HEADER + "if(" + PLAY_ERROR + "){" + PLAY_ERROR + "();}";
                         onCallback(js);
                     }
                 };
@@ -436,6 +443,11 @@ private  String [] startRecondAudio;
 
                 @Override
                 public void onPlayFinished(int index) {
+                }
+
+                @Override
+                public void onPlayError() {
+
                 }
             };
         if (m_pfMusicPlayer != null) {

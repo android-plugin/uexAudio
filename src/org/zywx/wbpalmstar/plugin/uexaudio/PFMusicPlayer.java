@@ -26,6 +26,8 @@ import android.widget.Toast;
 
 public abstract class PFMusicPlayer {
 
+    private static final String TAG = "PFMusicPlayer";
+    
     public final static String F_SDKARD_PATH = "/sdcard/";//SD卡
     public final static String F_RES_PATH = "file:///res/";//工程的assets文件夹下
     public final static String F_DATA_PATH = "file:///data/";
@@ -135,6 +137,12 @@ public abstract class PFMusicPlayer {
             m_mediaPlayer = new MediaPlayer();
             m_mediaPlayer.setOnCompletionListener(new mediaPlayerCompletionListener());
             m_mediaPlayer.setOnErrorListener(new mediaPlayerErrorListener());
+            m_mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+                @Override
+                public void onBufferingUpdate(MediaPlayer mp, int percent) {
+                    BDebug.i(TAG, "onBufferingUpdate: " + percent + "%");
+                }
+            });
             playState = MEDIAPLAY_STATE_STOPING;
         }
     }
@@ -145,23 +153,27 @@ public abstract class PFMusicPlayer {
     class mediaPlayerCompletionListener implements OnCompletionListener {
         @Override
         public void onCompletion(MediaPlayer mp) {
-            if(loopCount == -1){
-                checkModeStart();
-                m_mediaPlayer.start();
-                playState = MEDIAPLAY_STATE_PLAYING;
-                onPlayFinished(loopIndex);
-                loopIndex++;
-            }else if (loopCount > 0 && loopIndex < loopCount) {
-                checkModeStart();
-                m_mediaPlayer.start();
-                playState = MEDIAPLAY_STATE_PLAYING;
-                loopIndex++;
-                onPlayFinished(loopIndex);
+            if (m_mediaPlayer != null) {
+                if(loopCount == -1){
+                    checkModeStart();
+                    m_mediaPlayer.start();
+                    playState = MEDIAPLAY_STATE_PLAYING;
+                    onPlayFinished(loopIndex);
+                    loopIndex++;
+                }else if (loopCount > 0 && loopIndex < loopCount) {
+                    checkModeStart();
+                    m_mediaPlayer.start();
+                    playState = MEDIAPLAY_STATE_PLAYING;
+                    loopIndex++;
+                    onPlayFinished(loopIndex);
+                } else {
+                    m_mediaPlayer.stop();
+                    playState = MEDIAPLAY_STATE_STOPING;
+                    onPlayFinished(loopIndex);
+                    checkModeEnd();
+                }
             } else {
-                m_mediaPlayer.stop();
-                playState = MEDIAPLAY_STATE_STOPING;
-                onPlayFinished(loopIndex);
-                checkModeEnd();
+                onPlayError();
             }
         }
     }
@@ -172,13 +184,23 @@ public abstract class PFMusicPlayer {
     public abstract void onPlayFinished(int index);
 
     /*
+     * 播放完音乐（提供给EUEX对象回调）
+     */
+    public abstract void onPlayError();
+
+    /*
      * 音乐出错监听
      */
     class mediaPlayerErrorListener implements OnErrorListener {
         @Override
         public boolean onError(MediaPlayer mp, int what, int extra) {
-            m_mediaPlayer.release();
+            if (m_mediaPlayer != null) {
+                m_mediaPlayer.release();
+                m_mediaPlayer = null;
+            }
             playState = MEDIAPLAY_STATE_STOPING;
+            BDebug.e(TAG, "onError: what=" + what + " extra=" + extra);
+            onPlayError();
             return false;
         }
     }
@@ -227,6 +249,8 @@ public abstract class PFMusicPlayer {
                 Toast.makeText(m_context, ResoureFinder.getInstance().getStringId(m_context, "plugin_audio_info_nofile"), Toast.LENGTH_LONG).show();
                 checkModeEnd();
             }
+        }else{
+            onPlayError();
         }
     }
 
@@ -436,7 +460,7 @@ public abstract class PFMusicPlayer {
                     float range = event.values[0];
                     SensorManager mSensorManager = (SensorManager) m_context.getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
                     Sensor mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-                    Log.i("uexAudio_onSensorChanged", range + "   max:" + mSensor.getMaximumRange());
+                    Log.i(TAG, "uexAudio_onSensorChanged " + range + "   max:" + mSensor.getMaximumRange());
                     if (range == 0) {
                         if (m_mediaPlayer != null) {
                             if (isModeInCall) {
