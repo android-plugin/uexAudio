@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <uexplugins>
-    <plugin uexName="uexAudio" version="4.4.16" build="16">
-        <info>16:适配了4.4引擎：mp3转换的lame库的so文件增加了64位的适配，对其进行了重新编译，采用了全新的封装aar</info>
+    <plugin uexName="uexAudio" version="4.4.17" build="2020111801">
+        <info>17:修复播放不支持格式或者损坏的音频后，无法再播放其他正常音频的bug</info>
+        <build>16:适配了4.4引擎：mp3转换的lame库的so文件增加了64位的适配，对其进行了重新编译，采用了全新的封装aar</build>
         <build>15:修改引擎版本升级到26之后，录音权限的动态申请</build>
         <build>14:新增录音权限拒绝监听回调,添加英文资源包,修复报无权限的问题</build>
         <build>13:增加停止正在播放音频后的回调函数</build>
