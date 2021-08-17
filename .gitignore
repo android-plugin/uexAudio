@@ -16,7 +16,6 @@ out/
 # Gradle files
 .gradle/
 build/
-/*/build/
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -33,16 +32,22 @@ proguard/
 # Android Studio captures folder
 captures/
 
-# Intellij
-*.iml
+# Android Studio Configs
 .idea/
+*.iml
 
-#Windows
-Thumbs.db
+### AndroidStudio Patch ###
 
-#MAC
-.DS_Stor
+!/gradle/wrapper/gradle-wrapper.jar
 
-gradle/
-gradlew
-gradlew.bat
+# Legacy Eclipse project files
+.classpath
+.project
+.cproject
+.settings/
+
+### AppCan Butterfly Plugins Ignore ###
+
+uex*/dex/*.jar
+uex*/jar/plugin_uex*.jar
+uex*.zip
