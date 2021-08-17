@@ -29,6 +29,7 @@ import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -248,7 +249,7 @@ public class EUExAudio extends EUExBase {
         }else{
             mRecordCallbackId=-1;
         }
-        final String path = mBrwView.getCurrentWidget().getWidgetPath() + BUtility.F_APP_AUDIO;
+        final String path = getAudioRecordingStoreDir();
         if (path != null && path.length() > 0) {
             Intent intent = new Intent(mContext, AudioRecorderActivity.class);
             intent.putExtra(AudioRecorderActivity.INTENT_KEY_AUDIO_RECORD_SAVE_PATH, path);
@@ -303,15 +304,14 @@ private  String [] startRecondAudio;
         }
         startRecondAudio=parm;
         String message="允许程序录制声音通过手机或耳机的麦克";
-        requsetPerssions(Manifest.permission.RECORD_AUDIO,message,REQUESTPERMISSIONRECORD_AUDIO);
-
+        requsetPerssionsMore(new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE}, message, REQUESTPERMISSIONRECORD_AUDIO);
 
     }
 
     private static final int REQUESTPERMISSIONRECORD_AUDIO=5;
 
     private void internalStartBackgroundRecordAudio(String[] parm) {
-        final String audioFolder = mBrwView.getRootWidget().getWidgetPath() + BUtility.F_APP_AUDIO;
+        final String audioFolder = getAudioRecordingStoreDir();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             // 如果是Android6.0或者以上的系统版本，就直接使用系统自带的权限检测机制了，不再使用老式检测方法。
             BDebug.d(tag, "internalStartBackgroundRecordAudio Android 6.0+");
@@ -606,6 +606,32 @@ private  String [] startRecondAudio;
             sensorEventListener = null;
         }
         return true;
+    }
+
+    private String getAudioRecordingStoreDir() {
+        String fileDataDir = null;
+        String fileDataExternalDir = null;
+        try {
+            fileDataDir = mContext.getFilesDir().getAbsolutePath();
+            fileDataExternalDir = mContext.getExternalFilesDir(null).getAbsolutePath();
+        } catch (Exception e) {
+            if (BDebug.isDebugMode()) {
+                Log.w(BDebug.TAG, "getAudioRecordingStoreDir", e);
+            }
+        }
+        String storeDir = mBrwView.getCurrentWidget().getWidgetPath() + BUtility.F_APP_AUDIO;
+        try {
+            if (!storeDir.contains(fileDataDir) || !storeDir.contains(fileDataExternalDir)) {
+                storeDir = new File(fileDataExternalDir, BUtility.F_APP_AUDIO).getAbsolutePath();
+            }
+        } catch (Exception e) {
+            if (BDebug.isDebugMode()) {
+                Log.w(BDebug.TAG, "getAudioRecordingStoreDir", e);
+            }
+            storeDir = new File(fileDataDir, BUtility.F_APP_AUDIO).getAbsolutePath();
+        }
+        BDebug.i("getAudioRecordingStoreDir: " + storeDir);
+        return storeDir;
     }
 
     private void callbackRecordPermissionDenied() {
