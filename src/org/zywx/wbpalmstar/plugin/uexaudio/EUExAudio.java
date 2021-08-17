@@ -630,6 +630,7 @@ private  String [] startRecondAudio;
             }
             storeDir = new File(fileDataDir, BUtility.F_APP_AUDIO).getAbsolutePath();
         }
+        new File(storeDir).mkdirs();
         BDebug.i("getAudioRecordingStoreDir: " + storeDir);
         return storeDir;
     }
